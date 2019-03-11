@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<% include ../views/partials/head %>
+
+<body>
+  <main>
+
+  <% include ../views/partials/nav %>
+
+    <hr class="g-brd-gray-light-v4 my-0">
+
+    <hr class="g-brd-gray-light-v4 my-0">
+    <section class="g-py-100">
+        <div class="container">
+            <header class="text-center g-width-60x--md mx-auto g-mb-50">
+                <div class="u-heading-v2-3--bottom g-brd-primary g-mb-20">
+                    <h2 class="h5 g-line-height-1_8">
+                        <%= message %>
+                    </h2>
+                </div>
+            </header>
+
+        </div>
+    </section>
+
+    <% include ../views/partials/footer %>
+
+    <a class="js-go-to u-go-to-v1" href="#!" data-type="fixed" data-position='{
+     "bottom": 15,
+     "right": 15
+   }' data-offset-top="400" data-compensation="#js-header" data-show-effect="zoomIn">
+      <i class="hs-icon hs-icon-arrow-top"></i>
+    </a>
+  </main>
+
+  <div class="u-outer-spaces-helper"></div>
+  <% include ../views/partials/script %>
+
+</body>
+
+</html>

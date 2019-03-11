@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ../views/partials/head %>
+<body>
+  <main>
+  <% include ../views/partials/nav %>
+  <input type="hidden" id="refresh" value="no">
+    <div class="container">
+      <section class="g-brd-bottom g-brd-gray-light-v4 g-py-30">
+          <h2 class="g-color-black g-font-weight-700 g-font-size-30 g-line-height-1 mb-4">购物车</h2>
+      </section>
+    </div>
+      <!-- Checkout Form -->
+      <div class="container g-pt-100 g-pb-70">
+
+          <div class="g-mb-100">
+
+          </div>
+
+          <div id="stepFormSteps">
+            <!-- Shopping Cart -->
+            <div id="step1" class="active">
+              <div class="row">
+                <div class="col-md-8 g-mb-30">
+                  <% if (flashMessage.length > 0) { %>
+                  <div class="alert alert-danger"> <span class="alert-danger"><%= flashMessage %> <span></div>
+                  <% } %>
+                  <!-- Products Block -->
+                  <div id= "product_block" class="g-overflow-x-scroll g-overflow-x-visible--lg">
+                    <table class="text-center w-100">
+                      <thead class="h6 g-brd-bottom g-brd-gray-light-v3 g-color-black text-uppercase">
+                        <tr>
+                          <th class="g-font-weight-400 text-left g-pb-20">课程</th>
+                          <th class="g-font-weight-400 g-width-130 g-pb-20">单价</th>
+                          <th class="g-font-weight-400 g-width-50 g-pb-20">数量</th>
+                          <th class="g-font-weight-400 g-width-130 g-pb-20">总价</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+
+                      <tbody class = "cart-items-container">
+                      </tbody>
+                    </table>
+
+                  </div>
+                  <a class="btn btn-block u-btn-primary g-font-size-15" href="/courses">前往课程列表添加课程</a>
+                  <!-- End Products Block -->
+                </div>
+
+                <div id="checkout_block" class="col-md-4 g-mb-30">
+                  <!-- 总价 -->
+                  <div class="g-bg-gray-light-v5 g-pa-20 g-pb-50 mb-4">
+                    <h4 class="h6 text-uppercase mb-3">总价</h4>
+
+                    <!-- <div class="d-flex justify-content-between mb-2">
+                      <span class="g-color-black">Subtotal</span>
+                      <span class="g-color-black g-font-weight-300">CAD$430.00</span>
+                    </div> -->
+                    <div class="d-flex justify-content-between">
+                      <span class="g-color-black">订课总额</span>
+                      <span class="g-color-black g-font-weight-300">CAD$<a id="totalPrice2"><%=(locals.price && price) || 0 %></a></span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="g-color-black">课程顾问</span>
+                        <span class="g-color-black g-font-weight-300">
+                            <select name="employee" id="employee" onchange="saveEmployee()">
+                                <option value="">其它</option>
+                                <% employees.forEach(function(employee) { %>
+                                    <option value="<%= employee.user_id %>" <% if (current_employee_id && current_employee_id == employee.user_id) { %>selected="selected" <% } %>>
+                                        <%= employee.first_name %>
+                                    </option>
+                                <% }); %>
+                            </select>
+                        </span>
+                    </div>
+                  </div>
+                  <!-- End Summary -->
+
+                  <!-- <button class="btn btn-block u-btn-outline-black g-brd-gray-light-v1 g-bg-black--hover g-font-size-13 text-uppercase g-py-15 mb-4" type="button">Update Shopping Cart</button> -->
+                  <form class="js-validate js-step-form" data-progress-id="#stepFormProgress" data-steps-id="#stepFormSteps" action="https://www3.moneris.com/HPPDP/index.php">
+                    <!--<input type="hidden" name="ps_store_id" value="CN95R02451">
+                    <input type="hidden" name="hpp_key" value="hpIBRQ5R3EJR">-->
+                    <input type="hidden" name="ps_store_id" value="V57XN06566">
+                    <input type="hidden" name="hpp_key" value="hpD6DE4DGAFD">
+                    <input type="hidden" name="charge_total" id="charge_total" value="">
+                    <input type="hidden" name="cust_id" value="<%= user_id %>">
+                    <input type="hidden" name="order_id" value="<%= cart_id %>">
+                    <input type="hidden" name="bill_first_name" value="<%= first_name %>">
+                    <input type="hidden" name="bill_last_name" value="<%= last_name %>">
+                    <input type="hidden" name="bill_phone" value="<%= phone %>">
+                    <input type="hidden" name="ship_first_name" value="<%= first_name %>">
+                    <input type="hidden" name="ship_last_name" value="<%= last_name %>">
+                    <input type="hidden" name="ship_phone" value="<%= phone %>">
+
+                    <button id = "checkout_button" class="btn btn-block u-btn-primary g-font-size-13 text-uppercase g-py-15 mb-4" type="submit" data-next-step="#step2">前往付款页面</button>
+                  </form>
+                </div>
+              </div>
+              
+            </div>
+            <!-- End Shopping Cart -->
+
+          </div>
+
+      </div>
+      <!-- End Checkout Form -->
+
+      <% include ../views/partials/footer %>
+
+      <a class="js-go-to u-go-to-v2" href="#!"
+         data-type="fixed"
+         data-position='{
+           "bottom": 15,
+           "right": 15
+         }'
+         data-offset-top="400"
+         data-compensation="#js-header"
+         data-show-effect="zoomIn">
+        <i class="hs-icon hs-icon-arrow-top"></i>
+      </a>
+    </main>
+
+    <div class="u-outer-spaces-helper"></div>
+    <% include ../views/partials/script %>
+    <script src="/js/checkout.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+ 
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+  </body>
+</html>

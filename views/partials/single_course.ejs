@@ -1,0 +1,169 @@
+
+
+<% for(var i=0; i < courses.length; i++) { %>
+<div class="product-card col-6 col-lg-3">
+
+    <!-- Product -->
+    <figure class="g-pos-rel g-mb-20">
+        <img class="img-fluid" src="assets/img-temp/480x700/img1.jpg" alt="Image Description">
+
+        <figcaption class="title-height w-100 g-bg-primary g-bg-black--hover text-center g-pos-abs g-bottom-0 g-transition-0_2 g-py-5">
+        <a class="course-title g-color-white g-font-size-11 text-uppercase g-letter-spacing-1 g-text-underline--none--hover"><%= courses[i].title %></a>
+        </figcaption>
+    </figure>
+
+    <div class="media">
+        <!-- Product Info -->
+        <div class="d-flex flex-column">
+        <h4 class="h6 g-color-black mb-1">
+            <a class="u-link-v5 g-color-black g-color-primary--hover">
+                课程介绍：<%= courses[i].description %>
+                <br>
+                课程编号：<%= courses[i].ref_num %>
+                <br>
+                开始时间：<%= courses[i].start_date %>
+                <br>
+                地点：<%= courses[i].location %>
+            </a>
+        </h4>
+        <a class="d-inline-block g-color-gray-dark-v5 g-font-size-13">总时长时间：<%= courses[i].duration %>小时</a>
+        <span class="d-block g-color-black g-font-size-17">CAD$:<%= courses[i].regular_price %></span>
+        </div>
+        <!-- End Product Info -->
+
+        <!-- Products Icons -->
+        <ul class="list-inline media-body text-right">
+        <li class="list-inline-item align-middle mx-0">
+            <a class="add u-icon-v1 u-icon-size--sm g-color-gray-dark-v5 g-color-primary--hover g-font-size-15 rounded-circle"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Add to Cart">
+            <% if (!courses[i].cart_item_id) { %>
+                <a data-actionName = "addIcon" class="mini-button green"
+                data-courseid = "<%= courses[i].courses_id %>"
+                data-coursetitle = "<%= courses[i].title %>"
+                data-regularPrice = "<%= courses[i].regular_price %>"
+                onclick="addProduct(event)">添加</a>
+                <a data-actionName = "removeIcon" onclick="removeProduct(event)" data-coursetitle = "<%= courses[i].title %>" data-courseid = "<%= courses[i].courses_id %>" class="mini-button red" hidden>移除</a>
+            <% } else{ %> 
+                <a data-actionName = "addIcon" hidden class="mini-button green"
+                data-courseid = "<%= courses[i].courses_id %>"
+                data-coursetitle = "<%= courses[i].title %>"
+                data-regularPrice = "<%= courses[i].regular_price %>"
+                onclick="addProduct(event)">添加</a>
+                <a data-actionName = "removeIcon" onclick="removeProduct(event)" data-coursetitle = "<%= courses[i].title %>" data-courseid = "<%= courses[i].courses_id %>" class="mini-button red">移除</a>
+                <% } %>
+                </a>                               
+
+        </li>
+
+        </ul>
+        <!-- End Products Icons -->
+    </div>
+    <!-- End Product -->
+</div>
+<% } %>
+
+<script>
+    function removeProduct(event) {
+        var title = event.target.dataset.coursetitle;
+        var courseid = event.target.dataset.courseid;
+        var self = this;
+        var totalPrice = parseFloat($('#totalPrice')[0].text).toFixed(2)/1.0; 
+        $(`<div id="confirmDialog_`+ courseid +`" title="移除课程">
+            <p>确定移除此课程：`+title+`？</p>
+        </div>`).dialog({
+            width: 350,
+            resizable: true,
+            dialogClass: 'no-close',
+            resizable: false,
+            height: 100,
+            modal: true,
+            draggable: false,
+            show: "slide",
+            buttons: {
+                "Confirm": function() {       
+                    var dia = this;            
+                    $.ajax({
+                        url: "/removeCourse",
+                        type: "post", //send it through get method
+                      
+                        data: { 
+                            product_id: courseid, 
+                            quantity: 1,
+                            totalPrice: totalPrice
+                        },
+                       
+                        success: function(response) {
+                            var res = JSON.parse(response);
+                            if(!!res.id){
+                                $('#totalPrice')[0].text = res.totalPrice+'';
+                                $("a[data-actionName='addIcon'][data-courseid="+res.id+"]")[0].hidden = false;
+                                $("a[data-actionName='removeIcon'][data-courseid="+res.id+"]")[0].hidden = true;
+                                $("div[data-courseid="+res.id+"]")[0].remove();  
+                                $('#itemsCount')[0].textContent = $('#itemsCount')[0].textContent/1 - 1 +''; 
+                                $( dia ).dialog( "close" );
+                            }
+            
+            
+                            //u
+                        },
+                        error: function(xhr) {
+                            //Do Something to handle error
+                        }
+                    });                    
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+        $(`#confirmDialog_`+courseid+``).dialog('open');
+
+
+        }
+    function addProduct(event) {
+        var title = event.target.dataset.coursetitle;
+        var courseid = event.target.dataset.courseid;
+        var totalPrice =  parseFloat($('#totalPrice')[0].text).toFixed(2)/1.0; 
+        $.ajax({
+            url: "/addCourse",
+            type: "post", //send it through get method
+            data: { 
+                product_id: courseid, 
+                quantity: 1,
+                totalPrice: totalPrice
+            },
+            success: function(response) {
+                var res = JSON.parse(response);
+                if(!!res.id){
+                    $('#totalPrice')[0].text = res.totalPrice+'';
+                    $("a[data-actionName='addIcon'][data-courseid="+res.id+"]")[0].hidden = true;
+                    $("a[data-actionName='removeIcon'][data-courseid="+res.id+"]")[0].hidden = false;
+                    $('#itemsCount')[0].textContent = ($('#itemsCount')[0].textContent/1 + 1) +''; 
+                    $(".mini-cart").append(                
+                `
+                <div data-courseid =` +res.id+ ` class="u-basket__product g-brd-none g-px-20">
+                    <div class="row no-gutters g-pb-5">
+
+                    <div class="col-8">
+                        <h6 class="g-font-weight-400 g-font-size-default">
+                        <a class="g-color-black g-color-primary--hover g-text-underline--none--hover">`+res.title+`</a>
+                        </h6>
+                        <small class="g-color-primary g-font-size-12">1 x CAD$`+res.regular_price.toFixed(2)+`</small>
+                    </div>
+                    </div>
+
+                </div>
+                `);
+                }
+
+
+                //u
+            },
+            error: function(xhr) {
+                //Do Something to handle error
+            }
+        });
+    }
+</script>

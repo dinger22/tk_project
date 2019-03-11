@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ../views/partials/head %>
+<body>
+<main>
+    <% include ../views/partials/nav %>
+
+    <!-- Checkout Form -->
+    <div class="container g-pt-100 g-pb-70">
+
+        <div class="g-mb-100">
+
+        </div>
+
+        <div id="stepFormSteps">
+            <!-- Shopping Cart -->
+            <div id="step1" class="active">
+                <div class="row">
+                    <div class="col-md-12 g-mb-30">
+                        <p>请查收您在<a href="www.tk-course.com" target="_blank">www.tk-course.com</a> 购买课程的收据. 您的订单编号是 <strong><%= orderItems[0].payment_id %></strong>.</p>
+                        <h2 class="g-color-black g-font-weight-700 g-font-size-30 g-line-height-1 mb-4">用户信息:</h2>
+                        <div class="g-overflow-x-scroll g-overflow-x-visible--lg">
+                            <table class="w-100">
+                                <tr>
+                                    <td class="g-font-weight-400 g-width-20 g-pb-20">名字</td>
+                                    <td class="g-font-weight-400 g-width-130 g-pb-20"><%= user.first_name %></td>
+                                </tr>
+                                <tr>
+                                    <td class="g-font-weight-400 g-width-20 g-pb-20">姓</td>
+                                    <td class="g-font-weight-400 g-width-130 g-pb-20"><%= user.last_name %></td>
+                                </tr>
+                                <tr>
+                                    <td class="g-font-weight-400 g-width-20 g-pb-20">电子邮件</td>
+                                    <td class="g-font-weight-400 g-width-130 g-pb-20"><%= user.email %></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <h2 class="g-color-black g-font-weight-700 g-font-size-30 g-line-height-1 mb-4">购买细节：</h2>
+                        <!-- Products Block -->
+                        <div class="g-overflow-x-scroll g-overflow-x-visible--lg">
+                            <table class="text-center w-100">
+                                <thead class="h6 g-brd-bottom g-brd-gray-light-v3 g-color-black text-uppercase">
+                                <tr>
+                                    <th class="g-font-weight-400 g-width-130 g-pb-20">数量</th>
+                                    <th class="g-font-weight-400 g-width-130 g-pb-20">课程号</th>
+                                    <th class="g-font-weight-400 g-width-50 g-pb-20">课程名称</th>
+                                    <th class="g-font-weight-400 g-width-130 g-pb-20">单价</th>
+                                    <th class="g-font-weight-400 g-width-130 g-pb-20">总价</th>
+                                    <th class="g-font-weight-400 g-width-130 g-pb-20">注册号</th>
+                                    <th class="g-font-weight-400 g-width-130 g-pb-20">注册人微信号</th>
+                                </tr>
+                                </thead>
+
+                                <tbody class = "cart-items-container">
+                                    <% orderItems.forEach(function(item) { %>
+                                        <tr>
+                                            <td><%= item.quantity %></td>
+                                            <td><%= item.course_refnum %></td>
+                                            <td><%= item.product_name %></td>
+                                            <td>$<%= item.product_cost %></td>
+                                            <td>$<%= item.product_cost*item.quantity %></td>
+                                            <td>REG<%= item.ref_num %></td>
+                                            <td><%= user.ref_num %></td>
+                                        </tr>
+                                    <% }); %>
+
+                                    <tr>
+                                        <td colspan="4">全价 (CAD) (包含HST)</td>
+                                        <td>$<%= orderItems[0].order_total %></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">付款额 (使用 <%= orderItems[0].card_type %> 尾号<%= orderItems[0].card_last4 %>)</td>
+                                        <td>$<%= orderItems[0].order_total %></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- End Products Block -->
+                    </div>
+                </div>
+
+            </div>
+            <!-- End Shopping Cart -->
+
+        </div>
+
+    </div>
+    <!-- End Checkout Form -->
+
+    <% include ../views/partials/footer %>
+
+    <a class="js-go-to u-go-to-v2" href="#!"
+       data-type="fixed"
+       data-position='{
+           "bottom": 15,
+           "right": 15
+         }'
+       data-offset-top="400"
+       data-compensation="#js-header"
+       data-show-effect="zoomIn">
+        <i class="hs-icon hs-icon-arrow-top"></i>
+    </a>
+</main>
+
+<div class="u-outer-spaces-helper"></div>
+<% include ../views/partials/script %>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+</body>
+</html>

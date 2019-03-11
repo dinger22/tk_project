@@ -1,0 +1,12 @@
+node_modules/
+# Elastic Beanstalk Files
+.elasticbeanstalk/
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+.DS_Store
+.DS_Store
+views/.DS_Store
+public/.DS_Store
+public/.DS_Store

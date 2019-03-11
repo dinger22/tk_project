@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<% include ../views/partials/head %>
+
+<body>
+  <main>
+    
+  <% include ../views/partials/nav %>
+
+    <hr class="g-brd-gray-light-v4 my-0">
+
+    <hr class="g-brd-gray-light-v4 my-0">
+           <!-- Products -->
+      <input type="hidden" id="refresh" value="no">
+      <div class="container">
+        <section class="g-brd-bottom g-brd-gray-light-v4 g-py-30">
+            <h2 class="g-color-black g-font-weight-700 g-font-size-30 g-line-height-1 mb-4">培训班</h2>
+        </section>
+          <!-- Filters -->
+          <div class="d-flex justify-content-end align-items-center g-brd-bottom g-brd-gray-light-v4 g-pt-40 g-pb-20">
+            <!-- Show -->
+            <div class="g-mr-60">
+              <h2 class="h6 align-middle d-inline-block g-font-weight-400 text-uppercase g-pos-rel g-top-1 mb-0">类别：</h2>
+  
+              <!-- Secondary Button -->
+              <div class="d-inline-block btn-group g-line-height-1_2">
+                <button
+                id="theButton"
+                type="button" 
+                class="btn btn-secondary dropdown-toggle h6 align-middle g-brd-none g-color-gray-dark-v5 g-color-black--hover g-bg-transparent text-uppercase g-font-weight-300 g-font-size-12 g-pa-0 g-pl-10 g-ma-0" 
+                data-toggle="dropdown" 
+                aria-haspopup="true" 
+                aria-expanded="false">
+                  所有
+                </button>
+                <div class="dropdown-menu rounded-0">
+                  <!-- <a class="dropdown-item g-color-gray-dark-v4 g-font-weight-300" href="#!">所有</a> -->
+                  <a id="all" class="dropdown-item g-color-gray-dark-v4 g-font-weight-300" onclick="getFilteredCourses(event)">所有</a>
+                  <a id="MAT" class="dropdown-item g-color-gray-dark-v4 g-font-weight-300" onclick="getFilteredCourses(event)">数学</a>
+                  <a id="STA" class="dropdown-item g-color-gray-dark-v4 g-font-weight-300" onclick="getFilteredCourses(event)">统计</a>
+                  <a id="APM" class="dropdown-item g-color-gray-dark-v4 g-font-weight-300" onclick="getFilteredCourses(event)">其他</a>
+                </div>
+              </div>
+              <!-- End Secondary Button -->
+            </div>
+            <!-- End Show -->
+  
+  
+          </div>
+          <!-- End Filters -->
+  
+          <!-- Products -->
+          <div class="row g-pt-30 g-mb-50">
+          </div>
+          <!-- End Products -->
+<!-- <a class="put-here"></a> -->
+
+
+    <a class="js-go-to u-go-to-v1" href="#!" data-type="fixed" data-position='{
+     "bottom": 15,
+     "right": 15
+   }' data-offset-top="400" data-compensation="#js-header" data-show-effect="zoomIn">
+      <i class="hs-icon hs-icon-arrow-top"></i>
+    </a>
+  </main>
+  <% include ../views/partials/footer %>
+  <div class="u-outer-spaces-helper"></div>
+  <% include ../views/partials/script %>
+  <script src="/js/courses.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+ 
+  <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+</body>
+
+</html>
